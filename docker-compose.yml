@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  backend:
+    build: ./GameSyncAI/backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db/gamesync
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: gamesync
+    ports:
+      - "5432:5432"
+
+  frontend:
+    build: ./GameSyncAI/frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
